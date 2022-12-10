@@ -1,0 +1,62 @@
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+:root {
+  --sweep-delay: 500ms;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Press Start 2P", cursive;
+}
+
+.main-container {
+  width: 100vw;
+  height: 100vh;
+}
+.main-container .dashboard-container {
+  width: 100%;
+  height: 100%;
+  background-color: gray;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.main-container .dashboard-container .gauge_container {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1em;
+}
+.main-container .dashboard-container .gauge_container .gauge-and-needle {
+  position: relative;
+  top: 0;
+  left: 0;
+}
+.main-container .dashboard-container .gauge_container .gauge-and-needle > img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  top: 0;
+  left: 0;
+}
+.main-container .dashboard-container .gauge_container .gauge-and-needle > img.base {
+  position: relative;
+}
+.main-container .dashboard-container .gauge_container .gauge-and-needle > img.needle {
+  position: absolute;
+  transition: transform 0.15s ease-in-out;
+  transform: rotate(180deg);
+}
+.main-container .dashboard-container .gauge_container .gauge-and-needle > img.needle.sweep-1 {
+  transition: transform 0s;
+}
+.main-container .dashboard-container .gauge_container .gauge-and-needle > img.needle.sweep-2 {
+  transition: transform var(--sweep-delay) ease-in-out;
+}
+.main-container .dashboard-container .gauge_container .gauge-and-needle > img.needle[enabled=no] {
+  transition: transform 0s;
+  transform: rotate(180deg) !important;
+}/*# sourceMappingURL=style.css.map */
