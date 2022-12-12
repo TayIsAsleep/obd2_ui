@@ -19,23 +19,27 @@ def send_OBD_query(command_name):
     global obd_connection
     cmd = obd.commands[command_name]
     response = obd_connection.query(cmd)
-    if response.is_null():
-        return None
-    else:
-        return response.value.magnitude
+    return None if response.is_null() else response.value.magnitude
 
 if __name__ == "__main__":
-    obd.logger.setLevel(obd.logging.DEBUG)
+    # Load settings
+    with open('settings.json') as f:
+        settings = json.load(f)
 
+    # Load gauges_data
     with open('gauges.json') as f:
         gauge_data = json.load(f)
         obd_name_lookup = {gauge_data[x]["OBD_name"]: x for x in gauge_data}
 
-    demo = True
+    # Set DEMO settings
+    demo = settings['demo_mode']
     demo_i = [0, True]
 
-    # Start
-    obd_connection = obd.OBD(timeout=0)
+    # Start OBD
+    obd.logger.setLevel(obd.logging.DEBUG)
+    obd_connection = obd.OBD(timeout=settings['OBD_timeout'])
+
+    # Start Flask
     app = Flask(__name__)
 
     @app.route("/")
@@ -54,8 +58,6 @@ if __name__ == "__main__":
     def api_fetch_data():
         requested_data = dict(request.form)
         
-        print("Requested data:", requested_data)
-
         data_to_return = {}
         for v_name in requested_data:
             data_to_return[v_name] = send_OBD_query(requested_data[v_name])
@@ -66,4 +68,4 @@ if __name__ == "__main__":
             "data": data_to_return
         })
 
-    app.run(host="0.0.0.0", use_reloader=False)
+    app.run(host=settings['host'], port=settings['port'], debug=settings['flask_debug_mode'], use_reloader=False)

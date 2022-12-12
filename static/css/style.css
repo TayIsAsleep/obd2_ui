@@ -17,6 +17,18 @@
   align-items: center;
   justify-content: space-evenly;
 }
+.main-container .text-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+.main-container .text-container #stop-button {
+  background-color: red;
+  padding: 2em;
+  text-align: center;
+  border: 0.5em solid black;
+  cursor: pointer;
+}
 .main-container .dashboard-container {
   width: 100%;
   display: flex;

@@ -22,6 +22,17 @@
     justify-content: space-evenly;
 
     .text-container{
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+
+        #stop-button{
+            background-color: red;
+            padding: 2em;
+            text-align: center;
+            border: 0.5em solid black;
+            cursor: pointer;
+        }
     }
 
     .dashboard-container{

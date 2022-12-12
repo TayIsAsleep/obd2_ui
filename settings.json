@@ -1,0 +1,7 @@
+{
+    "host":             "0.0.0.0",
+    "port":             "5000",
+    "flask_debug_mode": false,
+    "demo_mode":        true,
+    "OBD_timeout":      0
+}

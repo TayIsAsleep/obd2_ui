@@ -1,13 +1,13 @@
-const sweep_delay = 350;
+const sweep_delay = 400;
+const loop_delay = 100;
 var gauge_data = null;
 var data_to_request = {};
 $.ajax({
     async: false,
     type: 'GET',
     url: "/get_gauge_data",
-    success: function(data) {
+    success: function(data){
         gauge_data = data;
-    
         Object.keys(gauge_data).forEach(gauge_name=>{
             data_to_request[gauge_name] = gauge_data[gauge_name].OBD_name;
         });
@@ -38,10 +38,10 @@ function set_gauge(gauge_name, v){
     if (gauge_name == "all"){Object.keys(gauge_data).map(g => set_gauge(g, v));return;}
     let gauge = gauge_data[gauge_name];
     let needle = $(`#${gauge.id}`);
-    if (needle.hasClass("sweep-1") && set_gauge.caller.name != "sweep"){return;} // console.log(`tried to set gauge "${gauge_name}" to "${value}" but it was busy doing sweep animation`);
+    if (needle.hasClass("sweep-1") && set_gauge.caller.name != "sweep"){return;}
     needle.attr("enabled", v == null ? "no" : "yes");
     v = (v < gauge.min) ? gauge.min : (v > gauge.max) ? gauge.max : v; // Limit value
-    $(`#${gauge_name}_value`).text(v)
+    $(`#${gauge_name}_value`).text(needle.hasClass("sweep-1") || v == null ? '---' : v);
     needle.css("transform", `rotate(${eval(gauge.calc)}deg)`);
 }
 
@@ -59,9 +59,7 @@ $(document).ready(function(){
         `));
     });
 
-    sweep("all");
-
-    var t=setInterval(()=>{
+    function loop(){
         $.ajax({
             type: "POST",
             url: "/OBD/fetch",
@@ -115,5 +113,25 @@ $(document).ready(function(){
             
             clearInterval(t);
         })
-    },100);
+
+    }
+
+    sweep("all");
+    var t = setInterval(loop, loop_delay);
+
+    $("#stop-button").click(async function(){
+        if ($("#stop-button > h1").text() == "STOP"){
+            clearInterval(t);
+            $("#stop-button > h1").text("START");
+            $("#stop-button").css("background-color", "green");
+            await new Promise(resolve => setTimeout(resolve, loop_delay * 2));
+            set_gauge("all", null);
+        }
+        else{
+            sweep("all");
+            t = setInterval(loop, loop_delay);
+            $("#stop-button > h1").text("STOP");
+            $("#stop-button").css("background-color", "red");
+        }
+    })
 });
