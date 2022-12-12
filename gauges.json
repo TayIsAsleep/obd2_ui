@@ -1,0 +1,29 @@
+{
+    "speed":{
+        "id": "speed_needle",
+        "display_name": "Speed",
+        "OBD_name": "SPEED",
+        "min": 0,
+        "max": 290,
+        "unit": "km/h",
+        "calc": "0.965 * v + -135.5"
+    },
+    "rpm":{
+        "id": "rpm_needle",
+        "display_name": "RPM",
+        "OBD_name": "RPM",
+        "min": 0,
+        "max": 8000,
+        "unit": "rpm",
+        "calc": "0.0313 * v + -125.5"
+    },
+    "water_temp":{
+        "id": "water_temp_needle",
+        "display_name": "Water Temp",
+        "OBD_name": "COOLANT_TEMP",
+        "min": 0,
+        "max": 135,
+        "unit": "°C",
+        "calc": "2.009333 * v + -135.41"
+    }
+}

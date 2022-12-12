@@ -4,21 +4,38 @@ from flask import redirect
 from flask import jsonify
 from flask import request
 import obd
-
-obd.logger.setLevel(obd.logging.DEBUG)
+import json
 
 def send_OBD_query(command_name):
-    global connection
+    global demo_i, demo
+    if demo:
+        if demo_i[0] >= 1:
+            demo_i[1] = False
+        if demo_i[0] <= 0:
+            demo_i[1] = True
+        demo_i[0] += 0.01 * (1 if demo_i[1] else -1)
+        return round(demo_i[0] * gauge_data[obd_name_lookup[command_name]]['max'])
+
+    global obd_connection
     cmd = obd.commands[command_name]
-    response = connection.query(cmd)
+    response = obd_connection.query(cmd)
     if response.is_null():
         return None
     else:
         return response.value.magnitude
-    return 200
 
 if __name__ == "__main__":
-    connection = obd.OBD(timeout=10)
+    obd.logger.setLevel(obd.logging.DEBUG)
+
+    with open('gauges.json') as f:
+        gauge_data = json.load(f)
+        obd_name_lookup = {gauge_data[x]["OBD_name"]: x for x in gauge_data}
+
+    demo = True
+    demo_i = [0, True]
+
+    # Start
+    obd_connection = obd.OBD(timeout=0)
     app = Flask(__name__)
 
     @app.route("/")
@@ -28,6 +45,10 @@ if __name__ == "__main__":
     @app.route("/dashboard")
     def dashboard():
         return render_template("dashboard.html")
+
+    @app.route("/get_gauge_data")
+    def get_gauge_data():
+        return jsonify(gauge_data)
     
     @app.route("/OBD/fetch", methods=['GET','POST'])
     def api_fetch_data():
@@ -41,6 +62,7 @@ if __name__ == "__main__":
         
         return jsonify({
             "status": "OK",
+            "obd_status": obd_connection.status(),
             "data": data_to_return
         })
 
