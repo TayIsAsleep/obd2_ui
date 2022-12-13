@@ -23,31 +23,47 @@
   gap: 1em;
 }
 .main-container .text-container #stop-button {
-  background-color: red;
+  background-color: orange;
   padding: 2em;
   text-align: center;
   border: 0.5em solid black;
   cursor: pointer;
 }
+.main-container .text-container #stop-button[run_loop=true] {
+  background-color: green;
+}
+.main-container .text-container #stop-button[run_loop=true] h1::before {
+  content: "Running (Click to stop)";
+}
+.main-container .text-container #stop-button[run_loop=false] {
+  background-color: red;
+}
+.main-container .text-container #stop-button[run_loop=false] h1::before {
+  content: "Stopped (Click to start)";
+}
 .main-container .dashboard-container {
   width: 100%;
+  padding: 1em;
   display: flex;
   align-items: center;
   justify-content: space-around;
 }
 .main-container .dashboard-container .gauge_container {
+  flex: 1;
+}
+.main-container .dashboard-container .gauge_container.gauge {
   width: 30%;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1em;
 }
-.main-container .dashboard-container .gauge_container .gauge-and-needle {
+.main-container .dashboard-container .gauge_container.gauge .gauge-and-needle {
   position: relative;
   top: 0;
   left: 0;
 }
-.main-container .dashboard-container .gauge_container .gauge-and-needle > img {
+.main-container .dashboard-container .gauge_container.gauge .gauge-and-needle > img {
   width: 100%;
   height: 100%;
   -o-object-fit: cover;
@@ -55,21 +71,32 @@
   top: 0;
   left: 0;
 }
-.main-container .dashboard-container .gauge_container .gauge-and-needle > img.base {
+.main-container .dashboard-container .gauge_container.gauge .gauge-and-needle > img.base {
   position: relative;
 }
-.main-container .dashboard-container .gauge_container .gauge-and-needle > img.needle {
+.main-container .dashboard-container .gauge_container.gauge .gauge-and-needle > img.needle {
   position: absolute;
   transition: transform 0.15s ease-in-out;
   transform: rotate(180deg);
 }
-.main-container .dashboard-container .gauge_container .gauge-and-needle > img.needle.sweep-1 {
+.main-container .dashboard-container .gauge_container.gauge .gauge-and-needle > img.needle.sweep-1 {
   transition: transform 0s;
 }
-.main-container .dashboard-container .gauge_container .gauge-and-needle > img.needle.sweep-2 {
+.main-container .dashboard-container .gauge_container.gauge .gauge-and-needle > img.needle.sweep-2 {
   transition: transform var(--sweep-delay) ease-in-out;
 }
-.main-container .dashboard-container .gauge_container .gauge-and-needle > img.needle[enabled=no] {
+.main-container .dashboard-container .gauge_container.gauge .gauge-and-needle > img.needle[enabled=no] {
   transition: transform 0s;
   transform: rotate(180deg) !important;
+}
+.main-container .dashboard-container .gauge_container.number {
+  width: 100%;
+}
+.main-container .dashboard-container .number_container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  order: -1;
 }/*# sourceMappingURL=style.css.map */

@@ -1,29 +1,77 @@
+
 {
     "speed":{
-        "id": "speed_needle",
-        "display_name": "Speed",
-        "OBD_name": "SPEED",
-        "min": 0,
-        "max": 290,
-        "unit": "km/h",
-        "calc": "0.965 * v + -135.5"
+        "type"         : "gauge",
+        "id"           : "speed_needle",
+        "display_name" : "Speed",
+        "OBD_name"     : "SPEED",
+        "min"          : 0,
+        "max"          : 290,
+        "unit"         : "km/h",
+        "calc"         : "0.965 * v + -135.5"
     },
     "rpm":{
-        "id": "rpm_needle",
-        "display_name": "RPM",
-        "OBD_name": "RPM",
-        "min": 0,
-        "max": 8000,
-        "unit": "rpm",
-        "calc": "0.0313 * v + -125.5"
+        "type"         : "gauge",
+        "id"           : "rpm_needle",
+        "display_name" : "RPM",
+        "OBD_name"     : "RPM",
+        "min"          : 0,
+        "max"          : 8000,
+        "unit"         : "rpm",
+        "calc"         : "0.0313 * v + -125.5"
     },
     "water_temp":{
-        "id": "water_temp_needle",
-        "display_name": "Water Temp",
-        "OBD_name": "COOLANT_TEMP",
-        "min": 0,
-        "max": 135,
-        "unit": "°C",
-        "calc": "2.009333 * v + -135.41"
+        "type"         : "gauge",
+        "id"           : "water_temp_needle",
+        "display_name" : "Water Temp",
+        "OBD_name"     : "COOLANT_TEMP",
+        "min"          : 0,
+        "max"          : 135,
+        "unit"         : "°C",
+        "calc"         : "2.009333 * v + -135.41"
+    },
+    "volt":{
+        "type"         : "number",
+        "id"           : "volt",
+        "display_name" : "Voltage",
+        "OBD_name"     : "CONTROL_MODULE_VOLTAGE",
+        "min"          : 0,
+        "max"          : 20,
+        "round_to"     : 2,
+        "unit"         : "V",
+        "calc"         : "v"
+    },
+    "fuel_level":{
+        "type"         : "number",
+        "id"           : "fuel_level",
+        "display_name" : "Fuel %",
+        "OBD_name"     : "FUEL_LEVEL",
+        "min"          : 0,
+        "max"          : 100,
+        "round_to"     : 0,
+        "unit"         : "%",
+        "calc"         : "v"
+    },
+    "throttle_pos":{
+        "type"         : "number",
+        "id"           : "throttle_pos",
+        "display_name" : "Throttle position",
+        "OBD_name"     : "THROTTLE_POS",
+        "min"          : 0,
+        "max"          : 100,
+        "round_to"     : 0,
+        "unit"         : "%",
+        "calc"         : "v"
+    },
+    "litersperhour":{
+        "type"         : "number",
+        "id"           : "litersperhour",
+        "display_name" : "Fuel consumption",
+        "OBD_name"     : "FUEL_RATE",
+        "min"          : 0,
+        "max"          : 100,
+        "round_to"     : 2,
+        "unit"         : "L/h",
+        "calc"         : "v"
     }
 }

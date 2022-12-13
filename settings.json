@@ -1,7 +1,13 @@
 {
-    "host":             "0.0.0.0",
-    "port":             "5000",
-    "flask_debug_mode": false,
-    "demo_mode":        true,
-    "OBD_timeout":      0
+    "host"               : "0.0.0.0",
+    "port"               : "5000",
+    "flask_debug_mode"   : false,
+    "demo_mode"          : true,
+
+    "OBD_portstr"        : null, //  null
+    "OBD_baudrate"       : null, //  null
+    "OBD_protocol"       : null, //  null
+    "OBD_fast"           : true, //  true
+    "OBD_timeout"        : 0,    //   0.1
+    "OBD_check_voltage"  : false // false
 }

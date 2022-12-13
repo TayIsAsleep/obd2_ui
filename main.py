@@ -1,10 +1,11 @@
+import re
+import obd
+import json
 from flask import Flask
 from flask import render_template
 from flask import redirect
 from flask import jsonify
 from flask import request
-import obd
-import json
 
 def send_OBD_query(command_name):
     global demo_i, demo
@@ -18,13 +19,21 @@ def send_OBD_query(command_name):
 
     global obd_connection
     cmd = obd.commands[command_name]
-    response = obd_connection.query(cmd)
-    return None if response.is_null() else response.value.magnitude
+    if obd.commands.has_command(cmd):
+        response = obd_connection.query(cmd)
+        return None if response.is_null() else response.value.magnitude
+    else:
+        return None
 
 if __name__ == "__main__":
     # Load settings
     with open('settings.json') as f:
-        settings = json.load(f)
+        settings_string = f.read()
+        comments = re.findall('(?=\/\*).*(?<=\*\/)', settings_string) + \
+                   re.findall('((?=\/\/).*)', settings_string)
+        for comment in comments:
+            settings_string = settings_string.replace(comment, "", 1)
+        settings = json.loads(settings_string)
 
     # Load gauges_data
     with open('gauges.json') as f:
@@ -37,7 +46,14 @@ if __name__ == "__main__":
 
     # Start OBD
     obd.logger.setLevel(obd.logging.DEBUG)
-    obd_connection = obd.OBD(timeout=settings['OBD_timeout'])
+    obd_connection = obd.OBD(
+        portstr       = settings['OBD_portstr'],
+        baudrate      = settings['OBD_baudrate'],
+        protocol      = settings['OBD_protocol'],
+        fast          = settings['OBD_fast'],
+        timeout       = settings['OBD_timeout'],
+        check_voltage = settings['OBD_check_voltage']
+    )
 
     # Start Flask
     app = Flask(__name__)
@@ -57,15 +73,24 @@ if __name__ == "__main__":
     @app.route("/OBD/fetch", methods=['GET','POST'])
     def api_fetch_data():
         requested_data = dict(request.form)
-        
+
         data_to_return = {}
         for v_name in requested_data:
             data_to_return[v_name] = send_OBD_query(requested_data[v_name])
         
         return jsonify({
             "status": "OK",
-            "obd_status": obd_connection.status(),
+            "obd_info": {
+                "obd_status": obd_connection.status(),
+                "port_name": obd_connection.port_name(),
+                "protocol_name": obd_connection.protocol_name()
+            },
             "data": data_to_return
         })
 
-    app.run(host=settings['host'], port=settings['port'], debug=settings['flask_debug_mode'], use_reloader=False)
+    app.run(
+        host         = settings['host'],
+        port         = settings['port'],
+        debug        = settings['flask_debug_mode'],
+        use_reloader = False
+    )
