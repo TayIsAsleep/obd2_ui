@@ -11,29 +11,58 @@
     </head>
     <body>
         <div class="main-container">
-            <div class="text-container">
-                <h1>
-                    <span>SERVER STATUS : </span>
-                    <span id="server_status">---</span>
-                </h1>
-
-                <h1>
-                    <span>OBD STATUS : </span>
-                    <span id="obd_status">---</span>
-                </h1>
-
-                <h1>
-                    <span>PORT NAME : </span>
-                    <span id="port_name">---</span>
-                </h1>
-
-                <h1>
-                    <span>PROTOCAL NAME : </span>
-                    <span id="protocol_name">---</span>
-                </h1>
-
-                <div id="stop-button">
-                    <h1></h1>
+            <div class="top-container">
+                <div class="text-container">
+                    <h1>
+                        <span>SERVER STATUS : </span>
+                        <span id="server_status">---</span>
+                    </h1>
+    
+                    <h1>
+                        <span>OBD STATUS : </span>
+                        <span id="obd_status">---</span>
+                    </h1>
+    
+                    <h1>
+                        <span>PORT NAME : </span>
+                        <span id="port_name">---</span>
+                    </h1>
+    
+                    <h1>
+                        <span>PROTOCAL NAME : </span>
+                        <span id="protocol_name">---</span>
+                    </h1>
+    
+                    <div id="stop-button">
+                        <h1></h1>
+                    </div>
+                </div>
+                <div class="console-log">
+                    <script>
+                        var container = document.querySelector(".console-log");
+                        ["Log","Error","Warn","Debug"].forEach(type=>{eval(`
+                                console.default${type} = console.${type.toLowerCase()}.bind(console);
+                                console.${type.toLowerCase()} = function(){
+                                    console_log_override("${type.toUpperCase()}", arguments);
+                                };
+                        `);});
+                
+                        function console_log_override(type){
+                            console.defaultLog.apply(console, arguments[1]); // Make the default console log work still
+        
+                            let log_div = document.createElement("div");
+                            let info_pre = document.createElement("pre");
+                            let text_pre = document.createElement("pre");
+        
+                            info_pre.innerText = `${new Date().toISOString().split("T")[1].slice(0, -1)} (${arguments[0]}) : `;
+                            text_pre.innerText = Array.from(arguments[1]).join(" ");
+                            log_div.appendChild(info_pre);
+                            log_div.appendChild(text_pre);
+                            container.insertBefore(log_div, container.firstChild);
+                        }
+        
+                        console.log("Logging setup (If you can see this that means its working :)");
+                    </script>
                 </div>
             </div>
             <div class="dashboard-container"></div>

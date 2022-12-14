@@ -16,15 +16,35 @@
     height: 100vh;
     background-color: gray;
 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-evenly;
+    // display: flex;
+    // flex-direction: column;
+    // align-items: center;
+    // justify-content: space-evenly;
+
+    .top-container{
+        display: flex;
+        height: 50%;
+    }
+
+    .console-log{
+        width: 50%;
+        max-width: 50%;
+        height: 100%;
+        overflow: scroll;
+        display: flex;
+        flex-direction: column-reverse;
+
+        pre{
+            display: inline;
+        }
+    }
 
     .text-container{
         display: flex;
         flex-direction: column;
         gap: 1em;
+        width: 50%;
+        max-width: 50%;
 
         #stop-button{
             background-color: orange;
