@@ -1,5 +1,3 @@
-// @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-
 :root{
     --sweep-delay: 500ms;
 }
@@ -8,18 +6,12 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    // font-family: 'Press Start 2P', cursive;
 }
 
 .main-container{
     width: 100vw;
     height: 100vh;
     background-color: gray;
-
-    // display: flex;
-    // flex-direction: column;
-    // align-items: center;
-    // justify-content: space-evenly;
 
     .top-container{
         display: flex;

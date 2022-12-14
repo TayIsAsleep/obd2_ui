@@ -1,6 +1,7 @@
 import re
 import obd
 import json
+import platform
 from flask import Flask
 from flask import render_template
 from flask import redirect
@@ -26,6 +27,7 @@ def send_OBD_query(command_name):
         return None
 
 if __name__ == "__main__":
+    print(platform.uname())
     # Load settings
     with open('settings.json') as f:
         settings_string = f.read()
