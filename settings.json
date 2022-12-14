@@ -1,6 +1,6 @@
 {
     "host"               : "0.0.0.0",
-    "port"               : "5000",
+    "port"               : ["5000", "80"], // First is default, secound will always be run on the raspberry
     "flask_debug_mode"   : false,
     "demo_mode"          : true,
 

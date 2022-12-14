@@ -27,7 +27,6 @@ def send_OBD_query(command_name):
         return None
 
 if __name__ == "__main__":
-    print(platform.uname())
     # Load settings
     with open('settings.json') as f:
         settings_string = f.read()
@@ -92,7 +91,7 @@ if __name__ == "__main__":
 
     app.run(
         host         = settings['host'],
-        port         = settings['port'],
+        port         = settings['port'][1 if platform.uname().node == "rbp" else 0] ,
         debug        = settings['flask_debug_mode'],
         use_reloader = False
     )
