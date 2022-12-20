@@ -2,20 +2,6 @@ const sweep_delay = 400;
 const loop_delay = 100;
 const urlParams = new URLSearchParams(window.location.search);
 var run_loop = false;
-var gauge_data = null;
-var data_to_request = {};
-$.ajax({
-    async: false,
-    type: 'GET',
-    url: "/get_gauge_data",
-    success: function(data){
-        console.log(data);
-        gauge_data = data;
-        Object.keys(gauge_data).forEach(gauge_name=>{
-            data_to_request[gauge_name] = gauge_data[gauge_name].OBD_name;
-        });
-    }
-});
 
 function gradient(c1, c2, r){
     return [0,1,2].map(i=>Math.ceil(c1[i]*r+c2[i]*(1-r)));

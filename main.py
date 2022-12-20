@@ -4,7 +4,6 @@ import json
 import platform
 from flask import Flask
 from flask import render_template
-from flask import redirect
 from flask import jsonify
 from flask import request
 
@@ -63,16 +62,13 @@ if __name__ == "__main__":
     app = Flask(__name__)
 
     @app.route("/")
-    def index():
-        return redirect("/dashboard")
-        
     @app.route("/dashboard")
     def dashboard():
-        return render_template("dashboard.html")
-
-    @app.route("/get_gauge_data")
-    def get_gauge_data():
-        return jsonify(gauge_data)
+        return render_template(
+            template_name_or_list = "dashboard.html",
+            gauge_data            = gauge_data,
+            data_to_request       = {x: gauge_data[x]["OBD_name"] for x in gauge_data}
+        )
     
     @app.route("/OBD/fetch", methods=['GET','POST'])
     def api_fetch_data():
@@ -94,7 +90,7 @@ if __name__ == "__main__":
 
     app.run(
         host         = settings['host'],
-        port         = settings['port'][1 if platform.uname().node == "rbp" else 0] ,
+        port         = settings['port'][1 if platform.uname().node == "rbp" else 0],
         debug        = settings['flask_debug_mode'],
         use_reloader = False
     )

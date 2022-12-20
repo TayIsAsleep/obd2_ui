@@ -1,4 +1,4 @@
-
+/* https://python-obd.readthedocs.io/en/latest/Command%20Tables/ */
 {
     "speed":{
         "enabled"      : true,
@@ -49,7 +49,7 @@
         "enabled"      : true,
         "type"         : "number",
         "id"           : "fuel_level",
-        "display_name" : "Fuel %",
+        "display_name" : "Fuel level",
         "OBD_name"     : "FUEL_LEVEL",
         "min"          : 0,
         "max"          : 100,
