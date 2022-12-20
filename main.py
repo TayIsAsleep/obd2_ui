@@ -8,6 +8,9 @@ from flask import jsonify
 from flask import request
 
 def load_json_filter(fn):
+    """
+    Loads json file, even if it contains "illegal" comments.
+    """
     with open(fn) as f:
         s = f.read()
         comments = [x[0] for x in re.findall('(?=\/\*)((.|\\n)*?)(?<=\*\/)', s)] + \
@@ -17,6 +20,10 @@ def load_json_filter(fn):
         return json.loads(s)
 
 def send_OBD_query(command_name):
+    """
+    Sends query to OBD. Returns `None` if command is incompatable, or if something goes wrong\n
+    If query is compatable and it returns a value, it returns the "magnitude" value (raw python datatype)
+    """
     global demo_i, demo
     if demo:
         if demo_i[0] >= 1:
