@@ -1,5 +1,6 @@
 const sweep_delay = 400;
 const loop_delay = 100;
+const urlParams = new URLSearchParams(window.location.search);
 var run_loop = false;
 var gauge_data = null;
 var data_to_request = {};
@@ -85,15 +86,18 @@ async function loop_stop(){
 }
 
 $(document).ready(function(){
+    // Show or hide the log
+    $(".console-log").css("display", urlParams.get("log") != null ? "" : "none")
+
     // Create the gauges
     Object.keys(gauge_data).forEach(gauge_name=>{
         if (gauge_data[gauge_name].type == "gauge"){
             $(".dashboard-container").append($(`
                 <div id="${gauge_name}_container" class="gauge_container gauge" gauge_name="${gauge_name}">
-                    <h1>${gauge_data[gauge_name].display_name} : <span id="${gauge_name}_value">0</span> ${gauge_data[gauge_name].unit}</h1>
                     <div class="gauge-and-needle">
                         <img src="static/img/gauges/faces/${gauge_name}.png" id="${gauge_name}_base" class="base">
                         <img src="static/img/gauges/needles/needle.png" id="${gauge_name}_needle" class="needle">
+                        <h1>${gauge_data[gauge_name].display_name} : <span id="${gauge_name}_value">0</span> ${gauge_data[gauge_name].unit}</h1>
                     </div>
                 </div>
             `));
@@ -101,17 +105,18 @@ $(document).ready(function(){
             if (!$(".dashboard-container > .number_container")[0]){
                 $(".dashboard-container").append($(`
                     <div class="number_container gauge_container">
-                        <div class="center_div">
-                        </div>
+                        <table></table>
                     </div>
                 `));
             }
 
-            $(".dashboard-container > .number_container > .center_div").append($(`
-                <h1>${gauge_data[gauge_name].display_name} : <span id="${gauge_name}">0</span> ${gauge_data[gauge_name].unit}</h1>
+            $(".dashboard-container > .number_container > table").append($(`
+                <tr>
+                    <td>${gauge_data[gauge_name].display_name}</td>
+                    <td><span id="${gauge_name}">---</span> ${gauge_data[gauge_name].unit}</td>
+                </tr>
             `));
         }
-
     });
 
     // Start the main loop

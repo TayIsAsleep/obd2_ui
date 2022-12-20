@@ -8,6 +8,15 @@ from flask import redirect
 from flask import jsonify
 from flask import request
 
+def load_json_filter(fn):
+    with open(fn) as f:
+        s = f.read()
+        comments = [x[0] for x in re.findall('(?=\/\*)((.|\\n)*?)(?<=\*\/)', s)] + \
+                   re.findall('((?=\/\/).*)', s)
+        for comment in comments:
+            s = s.replace(comment, "", 1)
+        return json.loads(s)
+
 def send_OBD_query(command_name):
     global demo_i, demo
     if demo:
@@ -28,18 +37,12 @@ def send_OBD_query(command_name):
 
 if __name__ == "__main__":
     # Load settings
-    with open('settings.json') as f:
-        settings_string = f.read()
-        comments = re.findall('(?=\/\*).*(?<=\*\/)', settings_string) + \
-                   re.findall('((?=\/\/).*)', settings_string)
-        for comment in comments:
-            settings_string = settings_string.replace(comment, "", 1)
-        settings = json.loads(settings_string)
+    settings = load_json_filter("settings.json")
 
     # Load gauges_data
-    with open('gauges.json') as f:
-        gauge_data = json.load(f)
-        obd_name_lookup = {gauge_data[x]["OBD_name"]: x for x in gauge_data}
+    gauge_data = load_json_filter("gauges.json")
+    gauge_data = {x: gauge_data[x] for x in gauge_data if gauge_data[x]['enabled']}
+    obd_name_lookup = {gauge_data[x]["OBD_name"]: x for x in gauge_data}
 
     # Set DEMO settings
     demo = settings['demo_mode']

@@ -1,6 +1,7 @@
 
 {
     "speed":{
+        "enabled"      : true,
         "type"         : "gauge",
         "id"           : "speed_needle",
         "display_name" : "Speed",
@@ -11,6 +12,7 @@
         "calc"         : "0.965 * v + -135.5"
     },
     "rpm":{
+        "enabled"      : true,
         "type"         : "gauge",
         "id"           : "rpm_needle",
         "display_name" : "RPM",
@@ -21,6 +23,7 @@
         "calc"         : "0.0313 * v + -125.5"
     },
     "water_temp":{
+        "enabled"      : true,
         "type"         : "gauge",
         "id"           : "water_temp_needle",
         "display_name" : "Water Temp",
@@ -31,6 +34,7 @@
         "calc"         : "2.009333 * v + -135.41"
     },
     "volt":{
+        "enabled"      : true,
         "type"         : "number",
         "id"           : "volt",
         "display_name" : "Voltage",
@@ -42,6 +46,7 @@
         "calc"         : "v"
     },
     "fuel_level":{
+        "enabled"      : true,
         "type"         : "number",
         "id"           : "fuel_level",
         "display_name" : "Fuel %",
@@ -53,6 +58,7 @@
         "calc"         : "v"
     },
     "throttle_pos":{
+        "enabled"      : true,
         "type"         : "number",
         "id"           : "throttle_pos",
         "display_name" : "Throttle position",
@@ -64,6 +70,7 @@
         "calc"         : "v"
     },
     "litersperhour":{
+        "enabled"      : true,
         "type"         : "number",
         "id"           : "litersperhour",
         "display_name" : "Fuel consumption",
