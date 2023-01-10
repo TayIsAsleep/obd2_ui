@@ -1,2 +1,5 @@
-
+**.map
 *.map
+**.DS_Store
+*.DS_Store
+logs/*

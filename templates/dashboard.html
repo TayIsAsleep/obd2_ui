@@ -45,12 +45,21 @@
                 <div class="console-log">
                     <script>
                         var container = document.querySelector(".console-log");
-                        ["Log","Error","Warn","Debug"].forEach(type=>{eval(`
-                                console.default${type} = console.${type.toLowerCase()}.bind(console);
-                                console.${type.toLowerCase()} = function(){
-                                    console_log_override("${type.toUpperCase()}", arguments);
-                                };
+                        ["Log","Error","Warn","Debug"].map(type => {eval(`
+                            console.default${type} = console.${type.toLowerCase()}.bind(console);
+                            console.${type.toLowerCase()} = function(){
+                                console_log_override("${type.toUpperCase()}", arguments);
+                            };
                         `);});
+
+                        function make_printable(input){
+                            if (typeof(input) == "object"){
+                                return JSON.stringify(input, null, 4);
+                            }
+                            else{
+                                return String(input);
+                            }
+                        }
                 
                         function console_log_override(type){
                             console.defaultLog.apply(console, arguments[1]); // Make the default console log work still
@@ -61,12 +70,21 @@
         
                             info_pre.innerText = `${new Date().toISOString().split("T")[1].slice(0, -1)} (${arguments[0]}) : `;
                             text_pre.innerText = Array.from(arguments[1]).join(" ");
+
+                            text_pre.innerText = ""
+                            Array.from(arguments[1]).forEach(arg=>{
+                                text_pre.innerText += make_printable(arg) + " "
+                            })
+                            // if (arguments[1][0] != "hehe"){
+                            //     console.log("hehe", );
+                            // }
+                            
                             log_div.appendChild(info_pre);
                             log_div.appendChild(text_pre);
                             container.insertBefore(log_div, container.firstChild);
                         }
         
-                        console.log("Logging setup (If you can see this that means its working :)");
+                        console.log("Logging setup (If you can see this that means its working :)", ["","3"], {"a":3});
                     </script>
                 </div>
             </div>

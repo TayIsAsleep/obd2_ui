@@ -29,9 +29,11 @@
         overflow: scroll;
         display: flex;
         flex-direction: column-reverse;
+        gap: 1em;
 
         pre{
             display: inline;
+            // white-space: normal;
         }
     }
 

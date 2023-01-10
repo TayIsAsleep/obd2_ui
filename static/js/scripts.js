@@ -148,6 +148,11 @@ $(document).ready(function(){
                 $("#server_status").text(res.status);
 
                 if (res.status != "OK"){alert(res.status);return;}
+                if (res.obd_info.obd_status == "Not Connected"){
+                    console.log("Stopping due to OBD response being 'Not Connected'");
+                    // alert("ELM : Not Connected. Try starting again");
+                    loop_stop();
+                }
                 
                 Object.keys(res.data).forEach(gauge_name=>{
                     set_gauge(gauge_name, res.data[gauge_name]);
