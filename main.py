@@ -63,6 +63,7 @@ if __name__ == "__main__":
         level=logging.DEBUG
     )
     logging.getLogger().addHandler(logging.StreamHandler())
+    obd.logger.removeHandler(obd.console_handler)
 
     # Load settings
     settings = load_json_filter("settings.json")
