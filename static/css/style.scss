@@ -167,4 +167,14 @@
             }
         }
     }
+
+    &[mobile="true"]{
+        .top-container{
+            display: none;
+        }
+        .dashboard-container{
+            height: 100%;
+            display: grid;
+        }
+    }
 }

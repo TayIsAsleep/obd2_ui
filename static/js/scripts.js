@@ -1,7 +1,13 @@
 const sweep_delay = 400;
 const loop_delay = 100;
 const urlParams = new URLSearchParams(window.location.search);
-var run_loop = false;
+var run_loop = true;
+var gauge_cluster_n = null;
+
+function flag(f,returnValue=false){
+    let v = urlParams.get(f);
+    return v == null ? (returnValue ? v : false) : (returnValue ? v : true);
+}
 
 function gradient(c1, c2, r){
     return [0,1,2].map(i=>Math.ceil(c1[i]*r+c2[i]*(1-r)));
@@ -73,7 +79,7 @@ async function loop_stop(){
 
 $(document).ready(function(){
     // Show or hide the log
-    $(".console-log").css("display", urlParams.get("log") != null ? "" : "none")
+    $(".console-log").css("display", flag("log") ? "" : "none")
 
     // Create the gauges
     Object.keys(gauge_data).forEach(gauge_name=>{
@@ -105,8 +111,28 @@ $(document).ready(function(){
         }
     });
 
+    if (flag("mobile")){
+        $(".main-container").attr("mobile","true");
+        gauge_cluster_n = $(".dashboard-container > div").length;
+        let lookup = [
+            [0,0],
+            [1,1],
+            [2,1],
+            [2,2],
+            [2,2],
+            [3,2],
+            [3,2],
+            [4,2],
+            [4,2],
+            [3,3],
+            [5,2],
+        ][gauge_cluster_n];
+        $(".dashboard-container").css("grid-template-columns", `repeat(${lookup[0]}, calc(100% / ${lookup[0]}))`);
+        $(".dashboard-container").css("grid-template-rows", `repeat(${lookup[1]}, calc(100% / ${lookup[1]}))`);
+    }
+
     // Start the main loop
-    loop_start();
+    if (run_loop){loop_start();}else{loop_stop();};
     var t = setInterval(function(){
         if (run_loop){        
             $.ajax({

@@ -142,4 +142,11 @@
 .main-container .dashboard-container .number_container table td:last-child {
   text-align: center;
   width: 50%;
+}
+.main-container[mobile=true] .top-container {
+  display: none;
+}
+.main-container[mobile=true] .dashboard-container {
+  height: 100%;
+  display: grid;
 }/*# sourceMappingURL=style.css.map */
