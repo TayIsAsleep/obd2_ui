@@ -181,11 +181,11 @@ $(document).ready(function(){
                 $("#server_status").text(msg).css("color", "red");
             });
         }else{
-            set_gauge("all", null);
+            // set_gauge("all", null);
         }
-        if (flag("mobile")){
-            $(".main-container").css("background-color","green")
-        }
+        // if (flag("mobile")){
+        //     $(".main-container").css("background-color","green")
+        // }
     }, loop_delay);
 
     $("#stop-button").click(async function(){
@@ -198,6 +198,6 @@ $(document).ready(function(){
     });
 
     $("#test_button").click(function(){
-        set_gauge("all", 10);
+        set_gauge("all", 100);
     })
 });
