@@ -18,27 +18,27 @@ async function sweep(gauge_name){
     $("body").get(0).style.setProperty('--sweep-delay', `${sweep_delay}ms`);
     let needle = $(`#${gauge_data[gauge_name].id}`);
     needle.addClass("sweep-1"); // Removes all transitions from the needle so it can move to start pos instantly
-    set_gauge(gauge_name, gauge_data[gauge_name].min);
+    set_gauge(gauge_name, gauge_data[gauge_name].min, "sweep");
     await new Promise(resolve => setTimeout(resolve, sweep_delay / 2)); // Wait before animation starts
     needle.addClass("sweep-2"); // Adds the sweep delay transition to needle
 
     if (gauge_data[gauge_name].type == "gauge"){
-        set_gauge(gauge_name, gauge_data[gauge_name].max);
+        set_gauge(gauge_name, gauge_data[gauge_name].max, "sweep");
         await new Promise(resolve => setTimeout(resolve, sweep_delay * 1.5)); // Wait for needle to move to end pos
-        set_gauge(gauge_name, gauge_data[gauge_name].min);
+        set_gauge(gauge_name, gauge_data[gauge_name].min, "sweep");
         await new Promise(resolve => setTimeout(resolve, sweep_delay * 1.5)); // Wait for needle to return to final pos and wait a little extra
     }
     else if (gauge_data[gauge_name].type == "number"){
         for (let i = -2; i < 100; i++) {
             let num = gauge_data[gauge_name].max / 100 * (i+1);
-            set_gauge(gauge_name, num.toFixed(2));
+            set_gauge(gauge_name, num.toFixed(2), "sweep");
             await new Promise(resolve => setTimeout(resolve, sweep_delay / 100));
         }
         await new Promise(resolve => setTimeout(resolve, sweep_delay * 0.5));
 
         for (let i = 100; i > -2; i--) {
             let num = gauge_data[gauge_name].max / 100 * (i+1);
-            set_gauge(gauge_name, num.toFixed(2));
+            set_gauge(gauge_name, num.toFixed(2), "sweep");
             await new Promise(resolve => setTimeout(resolve, sweep_delay / 100));
         }
         await new Promise(resolve => setTimeout(resolve, sweep_delay * 0.5));
@@ -48,12 +48,12 @@ async function sweep(gauge_name){
     needle.removeClass("sweep-2");
 }
 
-function set_gauge(gauge_name, v){
+function set_gauge(gauge_name, v, caller_name=null){
     if (gauge_name == "all"){Object.keys(gauge_data).map(g => set_gauge(g, v));return;}
     let gauge = gauge_data[gauge_name];
 
     let target = $(`#${gauge.id}`);
-    if (target.hasClass("sweep-1") && set_gauge.caller.name != "sweep"){return;}
+    if (target.hasClass("sweep-1") && caller_name != "sweep"){return;}
     v = v == null ? "---" : ((v < gauge.min) ? gauge.min : (v > gauge.max) ? gauge.max : v); // Limit value
     target.attr("enabled", v == "---" ? "no" : "yes");
 
