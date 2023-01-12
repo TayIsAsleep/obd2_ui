@@ -83,13 +83,17 @@ $(document).ready(function(){
 
     // Create the gauges
     Object.keys(gauge_data).forEach(gauge_name=>{
+        let a = `<h1>${gauge_data[gauge_name].display_name} : <span id="${gauge_name}_value">0</span> ${gauge_data[gauge_name].unit}</h1>`;
+        if (flag("mobile")){
+            a = `<h1 style="font-size:7vw;">${gauge_data[gauge_name].display_name}<br><span id="${gauge_name}_value">0</span> ${gauge_data[gauge_name].unit}</h1>`
+        }
         if (gauge_data[gauge_name].type == "gauge"){
             $(".dashboard-container").append($(`
                 <div id="${gauge_name}_container" class="gauge_container gauge" gauge_name="${gauge_name}">
                     <div class="gauge-and-needle">
                         <img src="static/img/gauges/faces/${gauge_name}.png" id="${gauge_name}_base" class="base">
                         <img src="static/img/gauges/needles/needle.png" id="${gauge_name}_needle" class="needle">
-                        <h1>${gauge_data[gauge_name].display_name} : <span id="${gauge_name}_value">0</span> ${gauge_data[gauge_name].unit}</h1>
+                        ${a}
                     </div>
                 </div>
             `));
