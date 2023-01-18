@@ -32,10 +32,17 @@ def send_OBD_query(command_name):
 
     global obd_connection
     cmd = obd.commands[command_name]
+    logging.info(f"About to query for {command_name} ({cmd})")
     if obd.commands.has_command(cmd):
         response = obd_connection.query(cmd)
-        return None if response.is_null() else response.value.magnitude
+        if response.is_null():
+            logging.info(f"response.is_null() was true, returning None")
+            return None
+        else:
+            logging.info(f"Returning {response.value.magnitude}")
+            return response.value.magnitude
     else:
+        logging.warn(f"has_command() was false, returning None")
         return None
 
 if __name__ == "__main__":
@@ -126,6 +133,8 @@ if __name__ == "__main__":
         data_to_return = {}
         for v_name in requested_data:
             data_to_return[v_name] = send_OBD_query(requested_data[v_name])
+
+        logging.info(json.dumps(data_to_return))
         
         return jsonify({
             "status": "OK",

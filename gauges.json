@@ -21,7 +21,7 @@
         "max"          : 8000,
         "unit"         : "rpm",
         "calc"         : "0.0313 * v + -125.5"
-    },
+    }/*,
     "water_temp":{
         "enabled"      : true,
         "type"         : "gauge",
@@ -80,5 +80,5 @@
         "round_to"     : 2,
         "unit"         : "L/h",
         "calc"         : "v"
-    }
+    }*/
 }
