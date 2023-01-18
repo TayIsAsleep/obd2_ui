@@ -2,6 +2,7 @@ import re
 import os
 import obd
 import json
+import time
 import logging
 import platform
 from zipfile import ZipFile, ZIP_DEFLATED
@@ -93,6 +94,7 @@ if __name__ == "__main__":
     logging.info(f"Begin OBD connection with following settings:\n" + '\n'.join(
         f"OBD_{x} : {settings['OBD_'+x]}" for x in "portstr,baudrate,protocol,fast,timeout,check_voltage".split(",")
     ))
+    t0 = time.time()
     obd_connection = obd.OBD(
         portstr       = settings['OBD_portstr'],
         baudrate      = settings['OBD_baudrate'],
@@ -101,6 +103,8 @@ if __name__ == "__main__":
         timeout       = settings['OBD_timeout'],
         check_voltage = settings['OBD_check_voltage']
     )
+    obd_time_taken = time.time() - t0
+    logging.info(f"(OBD BOOTUP TOOK {round(obd_time_taken, 3)}s)")
 
     # Start Flask
     app = Flask(__name__)
