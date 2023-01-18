@@ -66,15 +66,26 @@ if __name__ == "__main__":
     obd.logger.removeHandler(obd.console_handler)
 
     # Load settings
-    settings = load_json_filter("settings.json")
+    try:
+        settings = load_json_filter("settings.json")
+    except:
+        logging.error("Could not load settings.json! Shutting down.")
+        exit()
 
     # Load gauges_data
-    gauge_data = load_json_filter("gauges.json")
+    try:
+        gauge_data = load_json_filter("gauges.json")
+    except:
+        logging.error("Could not load gauges.json! Shutting down.")
+        exit()
     gauge_data = {x: gauge_data[x] for x in gauge_data if gauge_data[x]['enabled']}
     obd_name_lookup = {gauge_data[x]["OBD_name"]: x for x in gauge_data}
 
     # Start OBD
     obd.logger.setLevel(obd.logging.DEBUG)
+    logging.info(f"Begin OBD connection with following settings:\n" + '\n'.join(
+        f"OBD_{x} : {settings['OBD_'+x]}" for x in "portstr,baudrate,protocol,fast,timeout,check_voltage".split(",")
+    ))
     obd_connection = obd.OBD(
         portstr       = settings['OBD_portstr'],
         baudrate      = settings['OBD_baudrate'],
