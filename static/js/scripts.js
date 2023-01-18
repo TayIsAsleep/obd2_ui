@@ -1,5 +1,5 @@
 const sweep_delay = 400;
-const loop_delay = 100;
+const loop_delay = 500;
 const urlParams = new URLSearchParams(window.location.search);
 var run_loop = true;
 var gauge_cluster_n = null;
