@@ -7,6 +7,6 @@
     "OBD_baudrate"       : null, //  null
     "OBD_protocol"       : null, //  null
     "OBD_fast"           : true, //  true
-    "OBD_timeout"        : 0,    //   0.1
+    "OBD_timeout"        : 15,   //   0.1
     "OBD_check_voltage"  : false // false
 }
